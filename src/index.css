@@ -8,8 +8,9 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Base clara */
     --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --foreground: 215 35% 17%; /* Azul petróleo escuro (títulos) */
 
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
@@ -17,16 +18,18 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 217 91% 60%;
+    /* CGB Vagas: bordô/marsala escuro e saturado */
+    --primary: 350 65% 28%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 214 32% 91%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary-foreground: 215 35% 17%;
 
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 25 95% 53%;
+    /* Acento rosé (para realces sutis) */
+    --accent: 350 50% 50%;
     --accent-foreground: 0 0% 100%;
 
     --success: 142 71% 45%;
@@ -40,46 +43,47 @@ All colors MUST be HSL.
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --ring: 350 65% 28%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 217 91% 60%;
+    /* Sidebar em tom bordô escuro e saturado */
+    --sidebar-background: 350 65% 20%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 350 65% 28%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 28% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 215 28% 17%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 350 60% 22%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 350 60% 22%;
+    --sidebar-ring: 350 65% 28%;
 
     /* Custom tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 75%));
-    --gradient-accent: linear-gradient(135deg, hsl(25 95% 53%), hsl(45 93% 47%));
-    --shadow-elegant: 0 10px 30px -10px hsl(217 91% 60% / 0.2);
+    --gradient-primary: linear-gradient(135deg, hsl(350 65% 28%), hsl(350 55% 38%));
+    --gradient-accent: linear-gradient(135deg, hsl(350 50% 50%), hsl(350 40% 40%));
+    --shadow-elegant: 0 10px 30px -10px hsl(350 65% 28% / 0.3);
     --shadow-card: 0 4px 12px hsl(222 47% 11% / 0.1);
   }
 
   .dark {
-    --background: 222 47% 11%;
+    --background: 215 35% 10%;
     --foreground: 210 40% 98%;
 
-    --card: 215 28% 17%;
+    --card: 215 28% 14%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 215 28% 17%;
+    --popover: 215 28% 14%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%;
+    --primary: 350 65% 32%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 28% 17%;
+    --secondary: 215 28% 18%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 215 28% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 215 28% 18%;
+    --muted-foreground: 215 20% 70%;
 
-    --accent: 25 95% 53%;
+    --accent: 350 50% 50%;
     --accent-foreground: 0 0% 100%;
 
     --success: 142 71% 45%;
@@ -93,20 +97,20 @@ All colors MUST be HSL.
 
     --border: 215 28% 17%;
     --input: 215 28% 17%;
-    --ring: 217 91% 60%;
+    --ring: 350 65% 32%;
 
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-background: 350 65% 18%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 350 65% 32%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 28% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 215 28% 17%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 350 60% 20%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 350 60% 20%;
+    --sidebar-ring: 350 65% 32%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 75%));
-    --gradient-accent: linear-gradient(135deg, hsl(25 95% 53%), hsl(45 93% 47%));
-    --shadow-elegant: 0 10px 30px -10px hsl(217 91% 60% / 0.3);
+    --gradient-primary: linear-gradient(135deg, hsl(350 65% 32%), hsl(350 55% 40%));
+    --gradient-accent: linear-gradient(135deg, hsl(350 50% 50%), hsl(350 40% 42%));
+    --shadow-elegant: 0 10px 30px -10px hsl(350 65% 32% / 0.4);
     --shadow-card: 0 4px 12px hsl(0 0% 0% / 0.3);
   }
 }
