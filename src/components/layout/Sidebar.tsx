@@ -39,10 +39,10 @@ const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {
           end={item.href === "/"}
           onClick={onNavigate}
           className={({ isActive }) =>
-            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+            `flex items-center gap-3 px-5 py-3.5 rounded-xl transition-all duration-200 ${
               isActive
-                ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-md"
-                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:scale-105 hover:shadow-sm"
+                ? "bg-primary text-primary-foreground shadow-md"
+                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground hover:shadow-sm"
             }`
           }
         >
@@ -55,10 +55,10 @@ const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {
           to="/usuarios"
           onClick={onNavigate}
           className={({ isActive }) =>
-            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+            `flex items-center gap-3 px-5 py-3.5 rounded-xl transition-all duration-200 ${
               isActive
-                ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-md"
-                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:scale-105 hover:shadow-sm"
+                ? "bg-primary text-primary-foreground shadow-md"
+                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground hover:shadow-sm"
             }`
           }
         >
@@ -71,7 +71,7 @@ const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {
         <Button
           variant="ghost"
           onClick={handleLogout}
-          className="w-full justify-start gap-3 px-4 py-3 rounded-xl text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-200 hover:scale-105"
+          className="w-full justify-start gap-3 px-5 py-3.5 rounded-xl text-sidebar-foreground hover:bg-sidebar-accent hover:text-destructive transition-all duration-200"
         >
           <LogOut className="h-5 w-5 flex-shrink-0" />
           <span className="font-medium">Sair</span>
@@ -93,30 +93,30 @@ export const Sidebar = () => {
         </SheetTrigger>
         <SheetContent side="left" className="w-72 bg-sidebar p-0">
           <div className="flex h-full flex-col">
-            <div className="flex h-20 items-center gap-3 px-6 border-b border-sidebar-border">
-              <img src="/CGB.png" alt="CGB" className="h-10 w-10 object-contain" />
-              <div>
-                <h1 className="text-lg font-bold text-sidebar-foreground">Controle de Frota</h1>
-                <p className="text-xs text-sidebar-foreground/70">CGB Energia</p>
-              </div>
-            </div>
-            <nav className="flex-1 space-y-2 p-4 overflow-y-auto">
-              <NavLinks onNavigate={() => document.body.click()} />
-            </nav>
+        <div className="flex h-24 items-center gap-3 px-6 border-b border-sidebar-border">
+          <img src="/CGB.png" alt="CGB" className="h-10 w-10 object-contain" />
+          <div>
+            <h1 className="text-lg font-bold text-sidebar-foreground">Controle de Frota</h1>
+            <p className="text-xs text-sidebar-foreground/70">CGB Energia</p>
+          </div>
+        </div>
+        <nav className="flex-1 space-y-3 p-6 overflow-y-auto">
+          <NavLinks onNavigate={() => document.body.click()} />
+        </nav>
           </div>
         </SheetContent>
       </Sheet>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 bg-sidebar border-r border-sidebar-border shadow-xl">
-        <div className="flex h-20 items-center gap-3 px-6 border-b border-sidebar-border">
+      <aside className="hidden md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 bg-sidebar border-r border-sidebar-border shadow-lg">
+        <div className="flex h-24 items-center gap-3 px-6 border-b border-sidebar-border">
           <img src="/CGB.png" alt="CGB" className="h-12 w-12 object-contain" />
           <div>
             <h1 className="text-lg font-bold text-sidebar-foreground">Controle de Frota</h1>
             <p className="text-xs text-sidebar-foreground/70">CGB Energia</p>
           </div>
         </div>
-        <nav className="flex-1 space-y-2 p-4 overflow-y-auto">
+        <nav className="flex-1 space-y-3 p-6 overflow-y-auto">
           <NavLinks />
         </nav>
       </aside>
