@@ -20,11 +20,22 @@ export const ProtectedAdminRoute = ({ children }: { children: React.ReactNode })
       return;
     }
 
+    // Primeiro, tentar usar a função SQL (se disponível)
+    const { data: functionData, error: functionError } = await supabase
+      .rpc("get_current_user_role");
+    
+    if (!functionError && functionData === "administrador") {
+      setIsAuthorized(true);
+      setLoading(false);
+      return;
+    }
+
+    // Fallback: buscar diretamente na tabela
     const { data, error } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
     if (!error && data && data.role === "administrador") {
       setIsAuthorized(true);

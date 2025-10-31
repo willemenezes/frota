@@ -135,11 +135,24 @@ const Users = () => {
       return;
     }
 
-    // Get emails from auth.users
-    const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers();
+    // Get emails from function (apenas administradores podem ver)
+    // Se a função não funcionar, continuar sem emails (não crítico)
+    let emailsMap = new Map<string, string>();
+    try {
+      const { data: emailsData, error: emailsError } = await supabase.rpc("get_user_emails");
+      
+      if (emailsError) {
+        console.warn("[Users] Erro ao buscar emails (não crítico):", emailsError);
+        // Continuar sem emails - não é crítico para o funcionamento
+      } else if (emailsData) {
+        emailsMap = new Map(emailsData.map(u => [u.id, u.email]));
+      }
+    } catch (error) {
+      console.warn("[Users] Erro ao chamar função get_user_emails (não crítico):", error);
+      // Continuar sem emails - não é crítico para o funcionamento
+    }
 
     const rolesMap = new Map(rolesData?.map(r => [r.user_id, r.role]) || []);
-    const emailsMap = new Map(authUsers?.map(u => [u.id, u.email]) || []);
 
     const usersWithRoles: User[] = profilesData?.map(profile => ({
       id: profile.id,
@@ -155,41 +168,29 @@ const Users = () => {
 
   const onSubmitNewUser = async (data: NewUserFormData) => {
     try {
-      // Create user in auth
-      const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-        email: data.email,
-        password: data.password,
-        email_confirm: true,
-        user_metadata: {
+      // Obter token de autenticação
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("Sessão não encontrada. Faça login novamente.");
+      }
+
+      // Chamar Edge Function para criar usuário
+      const { data: functionData, error: functionError } = await supabase.functions.invoke("create-user", {
+        body: {
+          email: data.email,
+          password: data.password,
           nome_completo: data.nome_completo,
+          role: data.role,
         },
       });
 
-      if (authError) throw authError;
-
-      if (!authData.user) {
-        throw new Error("Usuário não criado");
+      if (functionError) {
+        throw new Error(functionError.message || "Erro ao chamar função de criação de usuário");
       }
 
-      // Create profile
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .insert({
-          id: authData.user.id,
-          nome_completo: data.nome_completo,
-        });
-
-      if (profileError) throw profileError;
-
-      // Set role
-      const { error: roleError } = await supabase
-        .from("user_roles")
-        .insert({
-          user_id: authData.user.id,
-          role: data.role,
-        });
-
-      if (roleError) throw roleError;
+      if (functionData?.error) {
+        throw new Error(functionData.message || "Erro ao criar usuário");
+      }
 
       toast.success("Usuário criado com sucesso!");
       setDialogOpen(false);

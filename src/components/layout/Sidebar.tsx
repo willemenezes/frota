@@ -51,7 +51,8 @@ const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {
           <span className="font-medium">{item.name}</span>
         </NavLink>
       ))}
-      {!loading && isAdmin && (
+      {/* Menu Usuários: mostrar se for admin OU se ainda estiver carregando (evita piscar) */}
+      {(isAdmin || (loading && role === "administrador")) && (
         <NavLink
           to="/usuarios"
           onClick={onNavigate}
