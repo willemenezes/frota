@@ -127,26 +127,28 @@ const Auth = () => {
             </div>
           </form>
           </CardContent>
+          
+          {/* Footer dentro do card */}
+          <div className="px-6 pb-6 border-t pt-6">
+            <div className="text-center space-y-4">
+              <div className="flex justify-center">
+                <img
+                  src="/CGB.png"
+                  alt="CGB"
+                  className="h-8 object-contain"
+                />
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-foreground">
+                  © 2025 <span className="font-bold text-primary">GRUPO CGB</span>. Todos os direitos reservados.
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Portal Administrativo - Sistema de Gestão de Frota
+                </p>
+              </div>
+            </div>
+          </div>
         </Card>
-
-        {/* Footer */}
-        <div className="text-center space-y-4 py-6">
-          <div className="flex justify-center">
-            <img
-              src="/CGB.png"
-              alt="CGB"
-              className="h-8 object-contain"
-            />
-          </div>
-          <div className="space-y-1">
-            <p className="text-sm text-foreground">
-              © 2025 <span className="font-bold text-primary">GRUPO CGB</span>. Todos os direitos reservados.
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Portal Administrativo - Sistema de Gestão de Frota
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );
