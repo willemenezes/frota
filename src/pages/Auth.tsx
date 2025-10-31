@@ -67,7 +67,7 @@ const Auth = () => {
       <div className="absolute inset-0 bg-background/40"></div>
       
       <div className="w-full max-w-md space-y-6 relative z-10">
-        <Card className="shadow-elegant">
+        <Card className="shadow-elegant bg-white/80 backdrop-blur-md border-white/20">
           <CardHeader className="space-y-1">
             <img
               src="/CGB ENERGIA LOGO.png"
