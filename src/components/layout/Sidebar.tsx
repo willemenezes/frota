@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Car, ClipboardCheck, AlertTriangle, LogOut, Menu, Users, Settings } from "lucide-react";
+import { LayoutDashboard, Car, ClipboardCheck, AlertTriangle, LogOut, Menu, Users, Settings, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ const navigation = [
   { name: "Veículos", href: "/veiculos", icon: Car },
   { name: "Checklists", href: "/checklists", icon: ClipboardCheck },
   { name: "Defeitos", href: "/defeitos", icon: AlertTriangle },
+  { name: "Relatórios", href: "/relatorios", icon: FileText },
 ];
 
 const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {

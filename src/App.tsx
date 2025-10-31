@@ -18,6 +18,7 @@ import ChecklistFill from "./pages/ChecklistFill";
 import Defects from "./pages/Defects";
 import NewDefect from "./pages/NewDefect";
 import Users from "./pages/Users";
+import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -119,6 +120,14 @@ const App = () => (
                 <ProtectedAdminRoute>
                   <Users />
                 </ProtectedAdminRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/relatorios"
+            element={
+              <ProtectedRoute>
+                <Reports />
               </ProtectedRoute>
             }
           />
