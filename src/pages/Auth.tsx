@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2, CheckCircle2 } from "lucide-react";
+import { translateSupabaseError } from "@/utils/errorTranslator";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -40,10 +41,13 @@ const Auth = () => {
         password: loginPassword,
       });
 
-      if (error) throw error;
-      toast.success("Login realizado com sucesso!");
-    } catch (error: any) {
-      toast.error(error.message || "Erro ao fazer login");
+          if (error) {
+            throw new Error(translateSupabaseError(error, "Erro ao fazer login"));
+          }
+          
+          toast.success("Login realizado com sucesso!");
+        } catch (error: any) {
+          toast.error(error.message || "Erro ao fazer login. Tente novamente.");
     } finally {
       setLoading(false);
     }

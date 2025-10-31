@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, CheckCircle, Camera, X, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { translateSupabaseError } from "@/utils/errorTranslator";
 
 // Seções do veículo
 const vehicleSections = [
@@ -21,7 +22,7 @@ const vehicleSections = [
   { id: "lateral_direita", label: "Lateral Direita", icon: "🚖" },
   { id: "interior", label: "Interior", icon: "💺" },
   { id: "motor", label: "Motor", icon: "⚙️" },
-];
+] as const;
 
 interface SectionData {
   photos: File[];
@@ -49,8 +50,15 @@ const ChecklistFill = () => {
   });
 
   useEffect(() => {
+    console.log("✅ ChecklistFill NOVO - Componente montado, ID:", id);
+    console.log("✅ Versão com TABS por seção do veículo");
     loadChecklistData();
   }, [id]);
+  
+  useEffect(() => {
+    console.log("✅ Sections data:", sectionsData);
+    console.log("✅ Current section:", currentSection);
+  }, [sectionsData, currentSection]);
 
   const loadChecklistData = async () => {
     if (!id) return;
@@ -183,13 +191,15 @@ const ChecklistFill = () => {
         })
         .eq("id", id);
 
-      if (error) throw error;
+      if (error) {
+        throw new Error(translateSupabaseError(error, "Erro ao salvar checklist"));
+      }
 
       toast.success("Checklist salvo com sucesso!");
       navigate(`/checklists/${id}`);
     } catch (error: any) {
       console.error("Erro ao salvar checklist:", error);
-      toast.error("Erro ao salvar checklist");
+      toast.error(error.message || "Erro ao salvar checklist. Tente novamente.");
     } finally {
       setSaving(false);
     }
@@ -217,15 +227,30 @@ const ChecklistFill = () => {
     );
   }
 
-  if (!checklist) return null;
+  if (!checklist) {
+    return (
+      <Layout>
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Carregando checklist...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   const currentSectionData = sectionsData[currentSection];
   const progress = getProgress();
   const completedSections = Object.values(sectionsData).filter(s => s.status !== "pendente").length;
 
+  console.log("✅ Renderizando ChecklistFill - Tabs:", vehicleSections.length, "Current:", currentSection);
+
   return (
     <Layout>
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6 animate-fadeIn">
+        {/* Debug indicator - remover depois */}
+        <div className="text-xs text-primary bg-primary/10 p-2 rounded mb-4 text-center">
+          ✅ NOVA VERSÃO COM TABS ATIVA - Se você está vendo isso, o código novo está funcionando!
+        </div>
+        
         <div className="flex items-center justify-between">
           <Button variant="ghost" onClick={() => navigate(`/checklists/${id}`)} className="gap-2">
             <ArrowLeft className="h-4 w-4" />
@@ -279,8 +304,8 @@ const ChecklistFill = () => {
         {/* Tabs for Vehicle Sections */}
         <Card className="shadow-md">
           <CardContent className="pt-6">
-            <Tabs value={currentSection} onValueChange={setCurrentSection}>
-              <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-2 h-auto p-2 bg-muted/50">
+            <Tabs value={currentSection} onValueChange={setCurrentSection} className="w-full">
+              <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-2 h-auto p-2 bg-muted/50 w-full overflow-x-auto">
                 {vehicleSections.map((section) => (
                   <TabsTrigger
                     key={section.id}
@@ -327,39 +352,40 @@ const ChecklistFill = () => {
                       </RadioGroup>
                     </div>
 
-                    {/* Photo Upload */}
-                    <div className="space-y-2">
-                      <Label>Fotos da Seção</Label>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {currentSectionData.photosPreview.map((preview, index) => (
-                          <div key={index} className="relative group aspect-square rounded-lg overflow-hidden border-2 border-muted">
-                            <img
-                              src={preview}
-                              alt={`Foto ${index + 1}`}
-                              className="w-full h-full object-cover"
+                      {/* Photo Upload */}
+                      <div className="space-y-2">
+                        <Label>Fotos da Seção</Label>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {currentSectionData.photosPreview.map((preview, index) => (
+                            <div key={index} className="relative group aspect-square rounded-lg overflow-hidden border-2 border-muted">
+                              <img
+                                src={preview}
+                                alt={`Foto ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                              <button
+                                onClick={() => removePhoto(index)}
+                                className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            </div>
+                          ))}
+                          
+                          <label className="aspect-square rounded-lg border-2 border-dashed border-muted hover:border-primary transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 hover:bg-muted/50 active:scale-95">
+                            <Camera className="h-10 w-10 text-primary" />
+                            <span className="text-sm font-medium text-foreground">Tirar Foto</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              multiple
+                              onChange={handlePhotoChange}
+                              className="hidden"
                             />
-                            <button
-                              onClick={() => removePhoto(index)}
-                              className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </div>
-                        ))}
-                        
-                        <label className="aspect-square rounded-lg border-2 border-dashed border-muted hover:border-primary transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 hover:bg-muted/50">
-                          <Camera className="h-8 w-8 text-muted-foreground" />
-                          <span className="text-sm text-muted-foreground">Adicionar Foto</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={handlePhotoChange}
-                            className="hidden"
-                          />
-                        </label>
+                          </label>
+                        </div>
                       </div>
-                    </div>
 
                     {/* Observation */}
                     <div className="space-y-2">

@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { translateSupabaseError } from "@/utils/errorTranslator";
 
 const NewVehicle = () => {
   const navigate = useNavigate();
@@ -25,20 +26,28 @@ const NewVehicle = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.from("vehicles").insert({
+      const { error, data } = await supabase.from("vehicles").insert({
         placa: formData.placa.toUpperCase(),
         modelo: formData.modelo,
         ano: parseInt(formData.ano),
         chassi: formData.chassi || null,
         quilometragem_atual: parseInt(formData.quilometragem_atual),
-      });
+      }).select();
 
-      if (error) throw error;
+      if (error) {
+        // Verificar se é erro específico de placa duplicada
+        if (error.message.toLowerCase().includes("duplicate key") && error.message.toLowerCase().includes("placa")) {
+          throw new Error("Esta placa já está cadastrada no sistema.");
+        }
+        
+        throw new Error(translateSupabaseError(error, "Erro ao cadastrar veículo"));
+      }
 
       toast.success("Veículo cadastrado com sucesso!");
       navigate("/veiculos");
     } catch (error: any) {
-      toast.error(error.message || "Erro ao cadastrar veículo");
+      console.error("Erro ao cadastrar veículo:", error);
+      toast.error(error.message || "Erro ao cadastrar veículo. Tente novamente.");
     } finally {
       setLoading(false);
     }
